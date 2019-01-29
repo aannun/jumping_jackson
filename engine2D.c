@@ -121,11 +121,11 @@ GLuint load_mesh()
     int vertices_len = 18;
     int uvs_len = 12;
 
-    float vertices[18] = {0,1,0, 0,0,0, 1,0,0, 1,0,0, 1,1,0, 0,1,0};
-    float uvs[12] = {1,0, 0,0, 0,1, 0,1, 1,1, 1,0};
+    float vertices[] = {1,0,0, 0,0,0, 0,1,0, 0,1,0, 1,1,0, 1,0,0};
+    float uvs[] = {1,0, 0,0, 0,1, 0,1, 1,1, 1,0};
 
     GLuint vbo[2];
-    glGenBuffers(1, &vbo[0]);
+    glGenBuffers(2, &vbo[0]);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
     glBufferData(GL_ARRAY_BUFFER, vertices_len * sizeof(float), vertices, GL_STATIC_DRAW);
