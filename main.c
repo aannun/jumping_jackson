@@ -77,14 +77,17 @@ int main(int argc, char **argv)
                 if (event.key.keysym.sym == SDLK_g)
                 {
                     init_sprite(&engine, &sprites[sprite_len], "Texture.TGA", 11, 0, 0, 0);
-                    sprites[sprite_len].scale = 0.3;
-                    sprite_len = (sprite_len+1)%max_sprites;
-                    curr_sprite = sprite_len-1;
+                    sprites[sprite_len].scale = 0.3 + ((float)sprite_len / 2);
+                    sprite_len = (sprite_len + 1) % max_sprites;
+                    curr_sprite = sprite_len - 1;
                     printf_s("%d", curr_sprite);
                 }
             }
         }
-
+        if (engine.sprites_len >= 2)
+        {
+            check_collision(engine.sprites[0], engine.sprites[1]);
+        }
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         engine_2D_draw_sprites(&engine);
