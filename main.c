@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     glEnable(GL_DEPTH_TEST);
 
     context_2D_t engine;
-    if(!init_engine2D(&engine, 256))
+    if (!init_engine2D(&engine, 256))
     {
         free(&engine);
         return -1;
@@ -46,30 +46,33 @@ int main(int argc, char **argv)
             if (event.type == SDL_KEYDOWN)
             {
                 if (event.key.keysym.sym == SDLK_RIGHT)
-                    sprites[curr_sprite].posX+=0.1;
+                    sprites[curr_sprite].posX += 0.1;
                 if (event.key.keysym.sym == SDLK_LEFT)
-                    sprites[curr_sprite].posX-=0.1;
+                    sprites[curr_sprite].posX -= 0.1;
                 if (event.key.keysym.sym == SDLK_UP)
-                    sprites[curr_sprite].posY+=0.1;
+                    sprites[curr_sprite].posY += 0.1;
                 if (event.key.keysym.sym == SDLK_DOWN)
-                    sprites[curr_sprite].posY-=0.1;
+                    sprites[curr_sprite].posY -= 0.1;
                 if (event.key.keysym.sym == SDLK_r)
-                    sprites[curr_sprite].rotation+=0.1;
+                    sprites[curr_sprite].rotation += 0.1;
                 if (event.key.keysym.sym == SDLK_e)
-                    sprites[curr_sprite].rotation-=0.1;
+                    sprites[curr_sprite].rotation -= 0.1;
                 if (event.key.keysym.sym == SDLK_f)
-                    curr_sprite = (curr_sprite+1)%sprite_len;
+                    curr_sprite = (curr_sprite + 1) % sprite_len;
                 if (event.key.keysym.sym == SDLK_g)
                 {
                     init_sprite(&engine, &sprites[sprite_len], "Texture.TGA", 11, 0, 0, 0);
-                    sprites[sprite_len].scale = 0.3;
-                    sprite_len = (sprite_len+1)%max_sprites;
-                    curr_sprite = sprite_len-1;
+                    sprites[sprite_len].scale = 0.3 + ((float)sprite_len / 2);
+                    sprite_len = (sprite_len + 1) % max_sprites;
+                    curr_sprite = sprite_len - 1;
                     printf_s("%d", curr_sprite);
                 }
             }
         }
-
+        if (engine.sprites_len >= 2)
+        {
+            check_collision(engine.sprites[0], engine.sprites[1]);
+        }
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         engine_2D_draw_sprites(&engine);

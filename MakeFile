@@ -7,7 +7,7 @@ ifeq ($(OS),Windows_NT)
 	BINARY:=$(BINARY).exe
 endif
 
-engine: main.o glad.o engine2D.o
+engine: main.o glad.o engine2D.o collision.o
 	$(CC) -o $(BINARY) $(LDFLAGS) $^
 
 glad.o: glad.c include\glad\glad.h
@@ -18,3 +18,6 @@ engine2D.o: engine2D.c engine2D.h
 
 main.o: main.c
 	$(CC) -c -o $@ $(CFLAGS) $^
+
+collision.o: engine2d_collision.c engine2D.h
+	$(CC) -c -o $@ $(CFLAGS) $<
