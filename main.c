@@ -1,12 +1,12 @@
 #include <stdio.h>
 #define SDL_MAIN_HANDLED
-#include "engine2D.h"
+#include "tilemap.h"
 
 int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_Window *window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 1024, SDL_WINDOW_OPENGL);
+    SDL_Window *window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_OPENGL);
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -29,6 +29,21 @@ int main(int argc, char **argv)
         free(&engine);
         return -1;
     }
+
+    tileContext_t tileMap;
+    const char *name = "Texture.TGA";
+    const char *files = {name};
+    tileContextInit(&tileMap, 1, &files);
+
+    int tileM[] = {-1, 0, 0, 0, 0,
+                   0, -1, 0, 0, 0,
+                   0, 0, -1, 0, 0,
+                   0, 0, 2, -1, 0,
+                   0, 0, 0, 0, -1};
+
+    Tile_map_t TileImplementation;
+    TileMapInit(&TileImplementation, 5, 5, tileM);
+    CreateLevel(&tileMap, &TileImplementation, &engine, 0.2);
 
     sprite_t sprites[10];
     int max_sprites = 10;
