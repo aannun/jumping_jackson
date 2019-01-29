@@ -1,12 +1,12 @@
 #include <stdio.h>
 #define SDL_MAIN_HANDLED
-#include "engine2D.h"
+#include "tilemap.h"
 
 int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_Window *window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 1024, SDL_WINDOW_OPENGL);
+    SDL_Window *window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_OPENGL);
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -24,11 +24,26 @@ int main(int argc, char **argv)
     glEnable(GL_DEPTH_TEST);
 
     context_2D_t engine;
-    if(!init_engine2D(&engine, 256))
+    if (!init_engine2D(&engine, 256))
     {
         free(&engine);
         return -1;
     }
+
+    tileContext_t tileMap;
+    const char *name = "Texture.TGA";
+    const char **files = {name};
+    tileContextInit(&tileMap, 1, files);
+
+    int tileM[] = {0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0};
+
+    Tile_map_t TileImplementation;
+    TileMapInit(&TileImplementation, 5, 5, tileM);
+    CreateLevel(&tileMap, &TileImplementation, &engine, 0.2);
 
     sprite_t sprites[10];
     int max_sprites = 10;
@@ -46,24 +61,24 @@ int main(int argc, char **argv)
             if (event.type == SDL_KEYDOWN)
             {
                 if (event.key.keysym.sym == SDLK_RIGHT)
-                    sprites[curr_sprite].posX+=0.1;
+                    sprites[curr_sprite].posX += 0.1;
                 if (event.key.keysym.sym == SDLK_LEFT)
-                    sprites[curr_sprite].posX-=0.1;
+                    sprites[curr_sprite].posX -= 0.1;
                 if (event.key.keysym.sym == SDLK_UP)
-                    sprites[curr_sprite].posY+=0.1;
+                    sprites[curr_sprite].posY += 0.1;
                 if (event.key.keysym.sym == SDLK_DOWN)
-                    sprites[curr_sprite].posY-=0.1;
+                    sprites[curr_sprite].posY -= 0.1;
                 if (event.key.keysym.sym == SDLK_r)
-                    sprites[curr_sprite].rotation+=0.1;
+                    sprites[curr_sprite].rotation += 0.1;
                 if (event.key.keysym.sym == SDLK_e)
-                    sprites[curr_sprite].rotation-=0.1;
+                    sprites[curr_sprite].rotation -= 0.1;
                 if (event.key.keysym.sym == SDLK_f)
-                    curr_sprite = (curr_sprite+1)%sprite_len;
+                    curr_sprite = (curr_sprite + 1) % sprite_len;
                 if (event.key.keysym.sym == SDLK_g)
                 {
                     init_sprite(&engine, &sprites[sprite_len], "Texture.TGA", 11, 0, 0, 0);
-                    sprite_len = (sprite_len+1)%max_sprites;
-                    curr_sprite = sprite_len-1;
+                    sprite_len = (sprite_len + 1) % max_sprites;
+                    curr_sprite = sprite_len - 1;
                     printf_s("%d", curr_sprite);
                 }
             }

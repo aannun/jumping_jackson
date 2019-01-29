@@ -34,7 +34,7 @@ vec3 scale_vec(vec3 vec, float scale)
 
 void main()
 {
-    vec3 world_position = scale_vec(rotate_z(vertex, radians(rotation)) + position, 2);
+    vec3 world_position = scale_vec(rotate_z(vertex, radians(rotation)), 2) + position;
     gl_Position = vec4(world_position, 1);
     
     uvs = uv;
