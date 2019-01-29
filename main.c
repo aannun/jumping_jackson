@@ -62,6 +62,7 @@ int main(int argc, char **argv)
                 if (event.key.keysym.sym == SDLK_g)
                 {
                     init_sprite(&engine, &sprites[sprite_len], "Texture.TGA", 11, 0, 0, 0);
+                    sprites[sprite_len].scale = 0.3;
                     sprite_len = (sprite_len+1)%max_sprites;
                     curr_sprite = sprite_len-1;
                     printf_s("%d", curr_sprite);

@@ -177,6 +177,7 @@ int init_engine2D(context_2D_t *engine_instance, int sprites_max_len)
 
     engine_instance->engine_2D_pos_uniform = glGetUniformLocation(program, "position");
     engine_instance->engine_2D_rot_uniform = glGetUniformLocation(program, "rotation");
+    engine_instance->engine_2D_scale_uniform = glGetUniformLocation(program, "scale");
 
     return 1;
 }
@@ -190,6 +191,7 @@ int init_sprite(context_2D_t *engine_instance, sprite_t *sprite, const char *fil
     sprite->posX = posX;
     sprite->posY = posY;
     sprite->posZ = posZ;
+    sprite->scale = 1;
     
     sprite->texture = load_texture(engine_instance, sprite, filename, file_len);
     engine_instance->sprites[engine_instance->sprites_len] = sprite;
@@ -209,6 +211,7 @@ void engine_2D_draw_sprites(context_2D_t *engine_instance)
 
     for(i = 0; i < len; i++)
     {
+        glUniform1f(engine_instance->engine_2D_scale_uniform, engine_instance->sprites[i]->scale);
         glUniform1f(engine_instance->engine_2D_rot_uniform, engine_instance->sprites[i]->rotation);
         glUniform3f(engine_instance->engine_2D_pos_uniform, engine_instance->sprites[i]->posX, engine_instance->sprites[i]->posY, engine_instance->sprites[i]->posZ);
 

@@ -5,6 +5,7 @@ layout(location=1) in vec2 uv;
 
 uniform vec3 position;
 uniform float rotation;
+uniform float scale;
 
 out vec2 uvs;
 
@@ -34,7 +35,7 @@ vec3 scale_vec(vec3 vec, float scale)
 
 void main()
 {
-    vec3 world_position = scale_vec(rotate_z(vertex, radians(rotation)) + position, 2);
+    vec3 world_position = scale_vec(rotate_z(vertex - vec3(0.5,0.5,0), radians(rotation)) + position, 1/scale);
     gl_Position = vec4(world_position, 1);
     
     uvs = uv;
