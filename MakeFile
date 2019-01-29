@@ -1,5 +1,5 @@
 CC=clang
-LDFLAGS=-lSDL2 -llibfbxc
+LDFLAGS=-lSDL2 -L. -llibfbxc -L.
 CFLAGS=-Wall -Wno-pragma-pack -ISDL2-2.0.9\include -Iinclude\glad -Iinclude
 BINARY=engine
 
@@ -7,7 +7,10 @@ ifeq ($(OS),Windows_NT)
 	BINARY:=$(BINARY).exe
 endif
 
-glad.o: glad.c glad.h
+engine: main.o glad.o engine2D.o
+	$(CC) -o $(BINARY) $(LDFLAGS) $^
+
+glad.o: glad.c include\glad\glad.h
 	$(CC) -c -o $@ $(CFLAGS) $<
 
 engine2D.o: engine2D.c engine2D.h
@@ -15,6 +18,3 @@ engine2D.o: engine2D.c engine2D.h
 
 main.o: main.c
 	$(CC) -c -o $@ $(CFLAGS) $^
-
-engine: main.o glad.o engine2D.o
-	$(CC) -o $(BINARY) $(LDFLAGS) $^
