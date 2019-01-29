@@ -36,3 +36,5 @@ typedef struct context_2D
 int init_engine2D(context_2D_t *engine_instance, int max_textures_len);
 int init_sprite(context_2D_t *engine_instance, sprite_t *sprite, const char *filename, size_t file_len, float posX, float posY, float posZ);
 void engine_2D_draw_sprites(context_2D_t *engine_instance);
+
+int check_collision(sprite_t *sprite1, sprite_t *sprite2);
