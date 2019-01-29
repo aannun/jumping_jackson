@@ -1,6 +1,7 @@
 #include "libfbxc.h"
 #include <glad.h>
 #include <SDL.h>
+#include <math.h>
 
 typedef struct sprite
 {
@@ -12,10 +13,10 @@ typedef struct sprite
 
     GLuint texture;
 
-}sprite_t;
+} sprite_t;
 
 typedef struct context_2D
-{   
+{
     GLuint program;
 
     GLuint mesh;
@@ -31,10 +32,11 @@ typedef struct context_2D
     int sprites_len;
     sprite_t **sprites;
 
-}context_2D_t;
+} context_2D_t;
 
 int init_engine2D(context_2D_t *engine_instance, int max_textures_len);
 int init_sprite(context_2D_t *engine_instance, sprite_t *sprite, const char *filename, size_t file_len, float posX, float posY, float posZ);
 void engine_2D_draw_sprites(context_2D_t *engine_instance);
 
+int check_overlap(sprite_t *sprite1, sprite_t *sprite2, float *diffX, float *diffY);
 int check_collision(sprite_t *sprite1, sprite_t *sprite2);

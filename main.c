@@ -69,7 +69,10 @@ int main(int argc, char **argv)
                 }
             }
         }
- 
+        if (engine.sprites_len >= 2)
+        {
+            check_collision(engine.sprites[0], engine.sprites[1]);
+        }
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         engine_2D_draw_sprites(&engine);
