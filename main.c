@@ -32,14 +32,14 @@ int main(int argc, char **argv)
 
     tileContext_t tileMap;
     const char *name = "Texture.TGA";
-    const char **files = {name};
-    tileContextInit(&tileMap, 1, files);
+    const char *files = {name};
+    tileContextInit(&tileMap, 1, &files);
 
-    int tileM[] = {0, 0, 0, 0, 0,
-                   0, 0, 0, 0, 0,
-                   0, 0, 0, 0, 0,
-                   0, 0, 0, 0, 0,
-                   0, 0, 0, 0, 0};
+    int tileM[] = {-1, 0, 0, 0, 0,
+                   0, -1, 0, 0, 0,
+                   0, 0, -1, 0, 0,
+                   0, 0, 2, -1, 0,
+                   0, 0, 0, 0, -1};
 
     Tile_map_t TileImplementation;
     TileMapInit(&TileImplementation, 5, 5, tileM);
