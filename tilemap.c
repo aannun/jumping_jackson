@@ -27,7 +27,7 @@ int CreateLevel(tileContext_t *ctx, Tile_map_t *tileMap, context_2D_t *engine, f
         sprite_t *sprite = malloc(sizeof(sprite_t));
 
         const char *name = "Texture.TGA";//ctx->filename[tileMap->tileSet[i]];
-        init_sprite(engine,sprite,name,strlen(name),(i%tileMap->width)*(scale*2)-(tileMap->width*scale), (i/tileMap->width)*(scale*2)-(tileMap->height*scale), 0);
+        init_sprite(engine,sprite,name,strlen(name),(i%tileMap->width) - (2-(tileMap->width*scale)/2), (i/tileMap->width) - (2-(tileMap->height*scale)/2), 0);
         sprite->scale = scale;
     }
     return 1;

@@ -8,6 +8,8 @@ typedef struct sprite
     float posY;
     float posZ;
     float rotation;
+    float scale;
+
     GLuint texture;
 
 }sprite_t;
@@ -23,6 +25,7 @@ typedef struct context_2D
 
     GLint engine_2D_pos_uniform;
     GLint engine_2D_rot_uniform;
+    GLint engine_2D_scale_uniform;
 
     unsigned int sprites_max_len;
     int sprites_len;
