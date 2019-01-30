@@ -4,15 +4,10 @@ typedef struct TileMap
     int *tileSet;
     unsigned int width;
     unsigned int height;
+    const char *filename;
+    unsigned int map_width;
+    unsigned int map_height;
 }Tile_map_t;
 
-typedef struct TileContext
-{
-    const char **filename;
-    unsigned int tile_lenght;
-}tileContext_t;
-
-
-int tileContextInit(tileContext_t *ctx, unsigned int tile_lenght, const char **filename);
-int TileMapInit(Tile_map_t *Tile_map, float width, float height, int *tileSet);
-int CreateLevel(tileContext_t *ctx, Tile_map_t *tileMap, context_2D_t *engine, float scale);
+int TileMapInit(Tile_map_t *Tile_map, unsigned int width, unsigned int height, int *tileSet, const char *filename, unsigned int map_width, unsigned int map_height);
+void *CreateLevel(context_2D_t *engine, Tile_map_t *tileMap, float offsetX, float offsetY, float posZ, float scale, int *out_len, int *collidable_indexes, int indexes_len);

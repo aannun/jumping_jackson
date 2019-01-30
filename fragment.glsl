@@ -7,6 +7,6 @@ uniform sampler2D tex_base_color;
 
 void main()
 {
-    vec3 color = texture(tex_base_color, uvs).xyz;
-    final_color = vec4(color, 0);
+    vec4 color = texture(tex_base_color, uvs).xyzw;
+    final_color = color;
 }

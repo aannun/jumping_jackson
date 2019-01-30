@@ -3,81 +3,79 @@
 #define COLLISION_FALSE 0
 #define COLLISION_TRUE 1
 
-int check_overlap(sprite_t *sprite1, sprite_t *sprite2, float *diffX, float *diffY)
+int check_overlap(obj2D_t *obj1, obj2D_t *obj2, float *diffX, float *diffY, float *x1, float *x2, float *y1, float *y2)
 {
-    float x1 = sprite1->posX - sprite1->scale / 2;
-    float y1 = sprite1->posY + sprite1->scale / 2;
-    float x2 = sprite2->posX - sprite2->scale / 2;
-    float y2 = sprite2->posY + sprite2->scale / 2;
+    *x1 = obj1->posX - obj1->sprite->pivotX*obj1->scale;
+    *y1 = obj1->posY - obj1->sprite->pivotY*obj1->scale;
+    *x2 = obj2->posX - obj2->sprite->pivotX*obj2->scale;
+    *y2 = obj2->posY - obj2->sprite->pivotY*obj2->scale;
 
-    int x_axis_overlap = COLLISION_FALSE;
-    if (x1 + sprite1->scale <= x2)
+    /*int x_axis_overlap = COLLISION_FALSE;
+    if (x1 + obj1->scale >= x2 && x2 + obj2->scale >= x1)
     {
-        *diffX = (x1 + sprite1->scale) - x2;
-        x_axis_overlap = COLLISION_TRUE;
-    }
-
-    if (x2 + sprite2->scale <= x1)
-    {
-        *diffX = (x2 + sprite2->scale) - x1;
+        *diffX = (x1 + obj1->scale) - x2;
         x_axis_overlap = COLLISION_TRUE;
     }
 
     int y_axis_overlap = COLLISION_FALSE;
-    if (y1 - sprite1->scale >= y2)
+    if (y1 - obj1->scale <= y2 && y2 - obj2->scale <= y1)
     {
-        *diffY = (y1 - sprite1->scale) - y2;
+        *diffY = (y1 - obj1->scale) - y2;
         y_axis_overlap = COLLISION_TRUE;
     }
+    return x_axis_overlap && y_axis_overlap;*/
 
-    if(y2 - sprite2->scale >= y1)
+    if( *x1 < *x2 + obj2->scale && 
+        *x1 + obj1->scale > *x2 &&
+        *y1 < *y2 + obj2->scale && 
+        *y1 + obj1->scale > *y2)
     {
-        *diffY = (y2 - sprite2->scale) - y1;
-        y_axis_overlap = COLLISION_TRUE;
+        *diffX = obj1->posX - obj2->posX;
+        *diffY = obj1->posY - obj2->posY;
+        return 1;
     }
-
-    return x_axis_overlap && y_axis_overlap;
+    return 0;
 }
 
-int check_collision(sprite_t *sprite1, sprite_t *sprite2)
+int check_collision(obj2D_t *obj1, obj2D_t *obj2)
 {
     float diffX;
     float diffY;
-    int collision_result = check_overlap(sprite1, sprite2, &diffX, &diffY);
+    float x1;
+    float y1;
+    float x2;
+    float y2;
+    int collision_result = check_overlap(obj1, obj2, &diffX, &diffY, &x1, &x2, &y1, &y2);
+    return collision_result;
+    
     if (collision_result)
     {
         float precision = 0.01;
-        float scale1 = sprite1->scale / 2;
-        float scale2 = sprite2->scale / 2;
-        if (fabsf(diffX) > fabsf(diffY))
+
+        if (fabsf(diffX) < fabsf(diffY))
         {
-            if (sprite1->posY < sprite2->posY)
+            if (obj1->posY > obj2->posY)
             {
-                SDL_Log("alto");
-                sprite2->posX = sprite1->posX + scale1 + scale2 + precision;
+                obj1->posY = y2 + obj2->scale + obj1->sprite->pivotY*obj1->scale + precision;
                 return collision_result;
             }
             else
             {
-                //OK
-                SDL_Log("basso");
-                sprite2->posY = sprite1->posY - scale1 - scale2 - precision;
+                obj1->posY = y2 - obj1->sprite->pivotY*obj1->scale - precision;
                 return collision_result;
             }
         }
         else
         {
-            if (sprite1->posX < sprite2->posX)
+            if (obj1->posX > obj2->posX)
             {
-                //OK
-                SDL_Log("destra");
-                sprite2->posX = sprite1->posX + scale1 + scale2 + precision;
+                SDL_Log("a");
+                obj1->posX = x2 + obj2->scale + obj1->sprite->pivotX*obj1->scale + precision;
                 return collision_result;
             }
             else
             {
-                SDL_Log("sinistra");
-                sprite2->posX = sprite1->posX - scale1 - scale2 - precision;
+                obj1->posX = x2 - obj1->sprite->pivotX*obj1->scale - precision;
                 return collision_result;
             }
         }
